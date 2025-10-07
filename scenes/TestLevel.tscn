@@ -1,0 +1,120 @@
+[gd_scene load_steps=11 format=3 uid="uid://n81dnsmye55n"]
+
+[ext_resource type="Texture2D" uid="uid://r72ou63umv43" path="res://Assets/sprites/Reimu_back.png" id="1_dojpo"]
+[ext_resource type="Script" uid="uid://dmvgnctpa4q0" path="res://scripts/Player_Controller.cs" id="1_i6x8u"]
+[ext_resource type="Texture2D" uid="uid://can1hgmu3d0o7" path="res://Assets/sprites/fairy_maid.png" id="3_df0lk"]
+[ext_resource type="Script" uid="uid://cycjrv4had0bw" path="res://scripts/MainCamera.cs" id="4_i6x8u"]
+[ext_resource type="PackedScene" uid="uid://ctg3hgtu1p1ca" path="res://scenes/subscenes/user_interface.tscn" id="5_8xg12"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sgp6g"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o5qli"]
+albedo_color = Color(0, 0.701961, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_df0lk"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8xg12"]
+size = Vector3(5.95905, 0.0124054, 5.97424)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1fpmp"]
+size = Vector3(4.52313, 12.0634, 4.24792)
+
+[node name="Node" type="Node"]
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00146349, 0.00181915, -0.000166066)
+mesh = SubResource("PlaneMesh_sgp6g")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_o5qli")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+mesh = SubResource("PlaneMesh_sgp6g")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_df0lk")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = SubResource("PlaneMesh_sgp6g")
+surface_material_override/0 = SubResource("StandardMaterial3D_df0lk")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+mesh = SubResource("PlaneMesh_sgp6g")
+surface_material_override/0 = SubResource("StandardMaterial3D_o5qli")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -4)
+mesh = SubResource("PlaneMesh_sgp6g")
+surface_material_override/0 = SubResource("StandardMaterial3D_df0lk")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = SubResource("PlaneMesh_sgp6g")
+surface_material_override/0 = SubResource("StandardMaterial3D_df0lk")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+mesh = SubResource("PlaneMesh_sgp6g")
+surface_material_override/0 = SubResource("StandardMaterial3D_o5qli")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -4)
+mesh = SubResource("PlaneMesh_sgp6g")
+surface_material_override/0 = SubResource("StandardMaterial3D_df0lk")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+mesh = SubResource("PlaneMesh_sgp6g")
+skeleton = NodePath("../MeshInstance3D8")
+surface_material_override/0 = SubResource("StandardMaterial3D_o5qli")
+
+[node name="Area3D" type="Area3D" parent="Node3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0186462, -0.00505829, -1.99872)
+shape = SubResource("BoxShape3D_8xg12")
+
+[node name="Player" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 61.5226, 0)
+script = ExtResource("1_i6x8u")
+
+[node name="Sprite3D" type="Sprite3D" parent="Player"]
+texture = ExtResource("1_dojpo")
+
+[node name="Area3D" type="Area3D" parent="Player"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0147705, 0.446167, 0)
+shape = SubResource("BoxShape3D_1fpmp")
+
+[node name="Enemy_Unit" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 63.371, -258.533)
+
+[node name="Sprite3D" type="Sprite3D" parent="Enemy_Unit"]
+billboard = 2
+texture = ExtResource("3_df0lk")
+
+[node name="Area3D" type="Area3D" parent="Enemy_Unit"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy_Unit/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0309753, -0.247131, 0.0149536)
+shape = SubResource("BoxShape3D_1fpmp")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 64.2641, 21.7285)
+script = ExtResource("4_i6x8u")
+target = NodePath("../Player")
+offset = Vector3(0, 0, 20)
+
+[node name="UILayer (CanvasLayer)" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="UserInterface" parent="UILayer (CanvasLayer)" instance=ExtResource("5_8xg12")]
+anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2

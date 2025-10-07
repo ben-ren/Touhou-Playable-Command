@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctg3hgtu1p1ca"]
+
+[ext_resource type="Texture2D" uid="uid://denxeti5ninu6" path="res://Assets/sprites/crosshair.png" id="1_vto60"]
+
+[node name="UserInterface" type="Control"]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Crosshair" type="Control" parent="."]
+layout_mode = 1
+anchor_right = 0.043
+anchor_bottom = 0.077
+offset_right = 0.463997
+offset_bottom = 0.103996
+
+[node name="BoxContainer" type="BoxContainer" parent="Crosshair"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TextureRect" type="TextureRect" parent="Crosshair/BoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_vto60")
+expand_mode = 2
