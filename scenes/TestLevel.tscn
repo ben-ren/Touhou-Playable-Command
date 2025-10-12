@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://n81dnsmye55n"]
+[gd_scene load_steps=13 format=3 uid="uid://n81dnsmye55n"]
 
-[ext_resource type="Texture2D" uid="uid://r72ou63umv43" path="res://Assets/sprites/Reimu_back.png" id="1_dojpo"]
-[ext_resource type="Script" uid="uid://dmvgnctpa4q0" path="res://scripts/Player_Controller.cs" id="1_i6x8u"]
+[ext_resource type="Script" uid="uid://bvfysuqv0c15p" path="res://scripts/HomeNode.cs" id="1_5n3yh"]
+[ext_resource type="PackedScene" uid="uid://cvv5l7tb8c88j" path="res://scenes/subscenes/player.tscn" id="1_8xg12"]
 [ext_resource type="Texture2D" uid="uid://can1hgmu3d0o7" path="res://Assets/sprites/fairy_maid.png" id="3_df0lk"]
-[ext_resource type="Script" uid="uid://cycjrv4had0bw" path="res://scripts/MainCamera.cs" id="4_i6x8u"]
+[ext_resource type="Script" uid="uid://6vd6fpvijwjp" path="res://scripts/CameraController.cs" id="5_0n17k"]
+[ext_resource type="Script" uid="uid://bttgtavqxsbqx" path="res://scripts/FocusPointController.cs" id="5_5n3yh"]
 [ext_resource type="PackedScene" uid="uid://ctg3hgtu1p1ca" path="res://scenes/subscenes/user_interface.tscn" id="5_8xg12"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_sgp6g"]
@@ -19,6 +20,8 @@ size = Vector3(5.95905, 0.0124054, 5.97424)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1fpmp"]
 size = Vector3(4.52313, 12.0634, 4.24792)
+
+[sub_resource type="Curve3D" id="Curve3D_8xg12"]
 
 [node name="Node" type="Node"]
 
@@ -79,18 +82,30 @@ surface_material_override/0 = SubResource("StandardMaterial3D_o5qli")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0186462, -0.00505829, -1.99872)
 shape = SubResource("BoxShape3D_8xg12")
 
-[node name="Player" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 61.5226, 0)
-script = ExtResource("1_i6x8u")
+[node name="HomeNode" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 70, 0)
+script = ExtResource("1_5n3yh")
+speed = 20.0
 
-[node name="Sprite3D" type="Sprite3D" parent="Player"]
-texture = ExtResource("1_dojpo")
+[node name="Player" parent="HomeNode" node_paths=PackedStringArray("focusPoint") instance=ExtResource("1_8xg12")]
+focusPoint = NodePath("../FocusPoint")
+lerpSpeed = 1.0
+MoveSpeed = 1.0
+X_Axis_Min_Range = -40.0
+X_Axis_Max_Range = 40.0
+Y_Axis_Min_Range = -25.0
+Y_Axis_Max_Range = 40.0
 
-[node name="Area3D" type="Area3D" parent="Player"]
+[node name="Camera3D" type="Camera3D" parent="HomeNode" node_paths=PackedStringArray("target", "focusPoint")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 31)
+script = ExtResource("5_0n17k")
+target = NodePath("../Player")
+focusPoint = NodePath("../FocusPoint")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0147705, 0.446167, 0)
-shape = SubResource("BoxShape3D_1fpmp")
+[node name="FocusPoint" type="Node3D" parent="HomeNode" node_paths=PackedStringArray("camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -75.589)
+script = ExtResource("5_5n3yh")
+camera = NodePath("../Camera3D")
 
 [node name="Enemy_Unit" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 63.371, -258.533)
@@ -105,16 +120,9 @@ texture = ExtResource("3_df0lk")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0309753, -0.247131, 0.0149536)
 shape = SubResource("BoxShape3D_1fpmp")
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 64.2641, 21.7285)
-script = ExtResource("4_i6x8u")
-target = NodePath("../Player")
-offset = Vector3(0, 0, 20)
+[node name="UserInterface" parent="." node_paths=PackedStringArray("Camera", "FocusPoint") instance=ExtResource("5_8xg12")]
+Camera = NodePath("../HomeNode/Camera3D")
+FocusPoint = NodePath("../HomeNode/FocusPoint")
 
-[node name="UILayer (CanvasLayer)" type="CanvasLayer" parent="."]
-follow_viewport_enabled = true
-
-[node name="UserInterface" parent="UILayer (CanvasLayer)" instance=ExtResource("5_8xg12")]
-anchors_preset = 15
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Path3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_8xg12")

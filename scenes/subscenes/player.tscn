@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvv5l7tb8c88j"]
+
+[ext_resource type="Script" uid="uid://o7rb6scvh23j" path="res://scripts/PlayerController.cs" id="1_mwyln"]
+[ext_resource type="Texture2D" uid="uid://r72ou63umv43" path="res://Assets/sprites/Reimu_back.png" id="2_tgnit"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1fpmp"]
+size = Vector3(4.52313, 12.0634, 4.24792)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_mwyln")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+texture = ExtResource("2_tgnit")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0147705, 0.446167, 0)
+shape = SubResource("BoxShape3D_1fpmp")
