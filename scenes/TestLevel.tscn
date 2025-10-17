@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://n81dnsmye55n"]
+[gd_scene load_steps=14 format=3 uid="uid://n81dnsmye55n"]
 
 [ext_resource type="Script" uid="uid://bvfysuqv0c15p" path="res://scripts/HomeNode.cs" id="1_5n3yh"]
 [ext_resource type="PackedScene" uid="uid://cvv5l7tb8c88j" path="res://scenes/subscenes/player.tscn" id="1_8xg12"]
@@ -17,6 +17,8 @@ albedo_color = Color(0, 1, 0, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8xg12"]
 size = Vector3(5.95905, 0.0124054, 5.97424)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5n3yh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1fpmp"]
 size = Vector3(4.52313, 12.0634, 4.24792)
@@ -87,9 +89,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 70, 0)
 script = ExtResource("1_5n3yh")
 speed = 20.0
 
-[node name="Player" parent="HomeNode" node_paths=PackedStringArray("focusPoint") instance=ExtResource("1_8xg12")]
+[node name="Player" parent="HomeNode" node_paths=PackedStringArray("focusPoint", "camera") instance=ExtResource("1_8xg12")]
 focusPoint = NodePath("../FocusPoint")
-lerpSpeed = 1.0
+camera = NodePath("../Camera3D")
+lerpSpeed = 5.0
 MoveSpeed = 1.0
 X_Axis_Min_Range = -40.0
 X_Axis_Max_Range = 40.0
@@ -98,6 +101,8 @@ Y_Axis_Max_Range = 40.0
 
 [node name="Camera3D" type="Camera3D" parent="HomeNode" node_paths=PackedStringArray("target", "focusPoint")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 31)
+fov = 90.0
+size = 50.0
 script = ExtResource("5_0n17k")
 target = NodePath("../Player")
 focusPoint = NodePath("../FocusPoint")
@@ -106,6 +111,11 @@ focusPoint = NodePath("../FocusPoint")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -75.589)
 script = ExtResource("5_5n3yh")
 camera = NodePath("../Camera3D")
+
+[node name="Area3D" type="Area3D" parent="HomeNode"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HomeNode/Area3D"]
+shape = SubResource("BoxShape3D_5n3yh")
 
 [node name="Enemy_Unit" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 63.371, -258.533)
@@ -126,3 +136,6 @@ FocusPoint = NodePath("../HomeNode/FocusPoint")
 
 [node name="Path3D" type="Path3D" parent="."]
 curve = SubResource("Curve3D_8xg12")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.403801, 0.914847, 0, -0.914847, 0.403801, 0, 126.461, 0)
