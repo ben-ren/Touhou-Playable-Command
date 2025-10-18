@@ -8,11 +8,20 @@ public partial class HomeNode : Node3D
 
     public override void _Ready()
     {
-        velocity = new Vector3(0,0,-speed);
+        
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        Position += velocity * (float)delta;
+        //MoveForward(delta);
+    }
+
+    public void MoveForward(double delta)
+    {
+        // Move along the node's *local forward direction* (-Z)
+        Vector3 forward = Transform.Basis.Z;
+
+        // Update position relative to current rotation
+        Position += forward * speed * (float)delta;
     }
 }

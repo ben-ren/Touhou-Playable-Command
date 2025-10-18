@@ -8,10 +8,6 @@ public partial class PlayerController : CharacterBody3D
     [Export] Camera3D camera;
     [Export] double lerpSpeed;
     [Export] float MoveSpeed;
-    [Export] public float X_Axis_Min_Range;
-    [Export] public float X_Axis_Max_Range;
-    [Export] public float Y_Axis_Min_Range;
-    [Export] public float Y_Axis_Max_Range;
 
     private Godot.Vector3 velocity = Godot.Vector3.Zero;
 
@@ -20,7 +16,6 @@ public partial class PlayerController : CharacterBody3D
     {
         MoveTowards(focusPoint, delta);
         InputControls(delta);
-        PlayerRangeLimit();
 
         // Detect collisions using MoveAndCollide if you want to check collisions manually
         KinematicCollision3D collision = MoveAndCollide(Godot.Vector3.Zero);
@@ -63,36 +58,30 @@ public partial class PlayerController : CharacterBody3D
     }
 
     /*
-    * Set's Player movement range based on Range values
-    * (TODO) Set range values based on Camera viewport
+    * calculates a target position at a set Z value between two points. 
+    * Used to calculate the target position for the MoveToward function.
     */
-    public void PlayerRangeLimit()
-    {
-        Position = new Godot.Vector3(
-            Godot.Mathf.Clamp(Position.X, X_Axis_Min_Range, X_Axis_Max_Range),
-            Godot.Mathf.Clamp(Position.Y, Y_Axis_Min_Range, Y_Axis_Max_Range),
-            Position.Z
-        );
-    }
-
-    public Godot.Vector3 CalculatePlayerPosition(Node3D target, Node3D camera, float playerZ)
+    public Godot.Vector3 CalculatePlayerPosition(Node3D target, Node3D camera, float distance_along_line)
     {
         float deltaZ = target.Position.Z - camera.Position.Z;
 
         // Avoid division by zero if camera and target Z are the same
         if (Mathf.IsEqualApprox(deltaZ, 0f))
-            return new Godot.Vector3(target.Position.X, target.Position.Y, playerZ);
+            return new Godot.Vector3(target.Position.X, target.Position.Y, distance_along_line);
 
         // Fraction along the line from target back toward camera at the desired Z
-        float factor = (target.Position.Z - playerZ) / deltaZ;
+        float factor = (target.Position.Z - distance_along_line) / deltaZ;
 
         // Interpolate X and Y along the line
         float x = target.Position.X - (target.Position.X - camera.Position.X) * factor;
         float y = target.Position.Y - (target.Position.Y - camera.Position.Y) * factor;
 
-        return new Godot.Vector3(x, y, playerZ);
+        return new Godot.Vector3(x, y, distance_along_line);
     }
 
+    /*
+    * Collision Logic handler
+    */
     private void OnCollision(KinematicCollision3D collision)
     {
         Node3D collider = collision.GetCollider() as Node3D;
